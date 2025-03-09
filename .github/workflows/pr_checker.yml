@@ -2,11 +2,11 @@ name: PR Test
 
 on:
   pull_request:
-    branches: [ "develop, main" ] # main branch에 PR을 보낼 때 실행
+    branches: ["develop"] # main branch에 PR을 보낼 때 실행
 
 jobs:
   test:
-    runs-on: ubuntu-latest	# 우분투 가상환경
+    runs-on: ubuntu-latest # 우분투 가상환경
     env:
       JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
 
@@ -29,7 +29,6 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-
       # Gradle test 실행
       - name: Test with Gradle
         run: ./gradlew --info test
@@ -37,7 +36,7 @@ jobs:
       # 테스트 후 Result 출력
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1
-        if: ${{ always() }}  # 'always' : 테스트 실패해도 Result 출력
+        if: ${{ always() }} # 'always' : 테스트 실패해도 Result 출력
         with:
           files: build/test-results/**/*.xml
 
