@@ -44,7 +44,7 @@ jobs:
 
       # Docker Tag 생성
       - name: Add Docker Tag
-        run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test
+        run: docker tag spring-cicd-test ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test
 
       # Docker hub 로 push
       - name: Docker Hub push
