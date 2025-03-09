@@ -2,7 +2,7 @@ name: PR Test
 
 on:
   pull_request:
-    branches: [ "main" ] # main branch에 PR을 보낼 때 실행
+    branches: [ "develop, main" ] # main branch에 PR을 보낼 때 실행
 
 jobs:
   test:
@@ -21,6 +21,14 @@ jobs:
       # Gradle wrapper 파일 실행 권한주기
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      # Gradle build
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+
+      - name: Build with Gradle Wrapper
+        run: ./gradlew build
+
 
       # Gradle test 실행
       - name: Test with Gradle
