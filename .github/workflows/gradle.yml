@@ -32,7 +32,7 @@ jobs:
 
       # Docker 이미지 Build
       - name: docker image build
-        run: docker build -t testpay .
+        run: docker build -t spring-cicd-test .
 
       # DockerHub Login (push 하기 위해)
       - name: docker login
@@ -43,7 +43,7 @@ jobs:
 
       # Docker hub 로 push
       - name: Docker Hub push
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/testpay
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test
 
   # 위 과정에서 푸시한 이미지를 ec2에서 풀받아서 실행
   run-docker-image-on-ec2:
@@ -52,16 +52,16 @@ jobs:
 
     steps:
       - name: docker pull
-        run : sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/testpay
+        run : sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test
 
       - name: docker stop container
         run: |
-          if [ $(sudo docker ps -a -q -f name=testpay) ]; then
-            sudo docker stop testpay
+          if [ $(sudo docker ps -a -q -f name=spring-cicd-test) ]; then
+            sudo docker stop spring-cicd-test
           fi
 
       - name: docker run new container
-        run: sudo docker run --rm -it -d -p 8080:8080 --name testpay ${{ secrets.DOCKERHUB_USERNAME }}/testpay
+        run: sudo docker run --rm -it -d -p 8080:8080 --name spring-cicd-test ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test
 
       - name: delete old docker image
         run: sudo docker system prune -f
