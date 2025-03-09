@@ -10,7 +10,6 @@
 #
 #jobs:
 #  test:
-#    runs-on: ubuntu-latest	# 우분투 가상환경
 #    env:
 #      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
 #
