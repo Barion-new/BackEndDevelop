@@ -41,6 +41,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+
+      # Docker Tag 생성
+      - name: Add Docker Tag
+        run: docker tag ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test
+
       # Docker hub 로 push
       - name: Docker Hub push
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test
