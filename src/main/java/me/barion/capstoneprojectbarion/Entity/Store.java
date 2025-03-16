@@ -46,4 +46,8 @@ public class Store {
                 ", onboardingStatus=" + onboardingStatus +
                 '}';
     }
+
+    public void updateStoreName(String newStoreName) {
+        this.storeName = newStoreName;
+    }
 }
