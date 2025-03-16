@@ -19,23 +19,22 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 @Configuration
 public class SecurityConfig {
 
-    //사용자 정보 관리
+
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = org.springframework.security.core.userdetails.User.withUsername("defaultUser")
-                .password(passwordEncoder().encode("qwer1234")) // 고정된 login_code 설정 (암호화)
+                .password(passwordEncoder().encode("qwer1234")) // 고정된 login_code
                 .roles("USER")
                 .build();
 
         return new InMemoryUserDetailsManager(user);
     }
-    // 암호화
+
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder(); // BCrypt 포함
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    //인증과정 처리
     @Bean
     public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         return new AuthenticationProvider() {
@@ -52,7 +51,7 @@ public class SecurityConfig {
                 }
 
                 // 인증 실패 시 예외 처리
-                throw new AuthenticationException("Invalid login code") {};
+                throw new AuthenticationException("정보가 없는 사용자입니다") {};
             }
 
             @Override
