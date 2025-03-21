@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Setter
 @Getter
 @Entity
@@ -24,8 +26,11 @@ public class Store {
     @Column(name = "password", length = 100)
     private String password;
 
-    @Column(name = "onboarding_status")
+    @Column(name = "onboarding_status" ,nullable = false)
     private Boolean onboardingStatus;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Category> categories;
 
     public Store() {}
 
