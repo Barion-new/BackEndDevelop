@@ -44,5 +44,14 @@ public class StoreController {
         return dto.getStoreType();
     }
 
+    @Operation(summary = "온보딩 설정", description = "온보딩을을 설정")
+    @GetMapping("/{storeId}/status")
+    public ResponseEntity<Boolean> getOnboardingStatus(@PathVariable Integer storeId) {
+        // 서비스 계층에서 상태 값을 가져옴
+        Boolean onboardingStatus = storeService.getOnboardingStatus(storeId);
+
+        return ResponseEntity.ok(onboardingStatus);
+    }
+
 
 }
