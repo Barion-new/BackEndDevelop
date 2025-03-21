@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.barion.capstoneprojectbarion.Entity.Store;
 import me.barion.capstoneprojectbarion.dto.StoreNameDto;
+import me.barion.capstoneprojectbarion.dto.StoreTypeDto;
 import me.barion.capstoneprojectbarion.service.StoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,17 @@ public class StoreController {
 
         // 요청 받은 storeName을 그대로 반환
         return dto.getStoreName();
+    }
+
+    @Operation(summary = "업종 설정", description = "업종을 설정")
+    @PutMapping("/{storeId}/type")
+    public String updateStoreType(@PathVariable Integer storeId,
+                                  @RequestBody StoreTypeDto dto) {
+        // 서비스 호출하여 업종 업데이트
+        storeService.updateStoreType(storeId, dto.getStoreType());
+
+        // 요청 받은 storeType을 그대로 반환
+        return dto.getStoreType();
     }
 
 

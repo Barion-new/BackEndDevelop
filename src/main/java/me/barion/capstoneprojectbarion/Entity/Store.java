@@ -55,4 +55,5 @@ public class Store {
     public void updateStoreName(String newStoreName) {
         this.storeName = newStoreName;
     }
+    public void updateStoreType(String newStoreType) {this.storeType = newStoreType;}
 }

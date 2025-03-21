@@ -28,4 +28,14 @@ public class StoreService {
 
         return storeRepository.save(store);
     }
+    @Transactional
+    public Store updateStoreType(Integer storeId, String storeType) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new EntityNotFoundException("가게를 찾을 수 없습니다: " + storeId));
+
+        store.updateStoreType(storeType);
+
+        return storeRepository.save(store);
+    }
+
 }
