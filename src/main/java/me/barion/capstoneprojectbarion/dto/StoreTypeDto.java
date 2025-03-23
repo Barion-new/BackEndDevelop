@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class StoreNameDto {
-    private String storeName;
+public class StoreTypeDto {
+    private String storeType;
 }
