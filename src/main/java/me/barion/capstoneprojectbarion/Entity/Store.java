@@ -1,9 +1,11 @@
 package me.barion.capstoneprojectbarion.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -29,8 +31,9 @@ public class Store {
     @Column(name = "onboarding_status" ,nullable = false)
     private Boolean onboardingStatus;
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Category> categories;
+    @OneToMany(mappedBy = "store")
+    @JsonIgnore // JSON 직렬화 제외
+    private List<Category> categories = new ArrayList<>();
 
     public Store() {}
 

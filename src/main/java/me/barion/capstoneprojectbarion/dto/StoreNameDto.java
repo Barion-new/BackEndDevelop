@@ -1,4 +1,3 @@
-// dto/StoreNameUpdateDto.java
 package me.barion.capstoneprojectbarion.dto;
 
 import lombok.Getter;
