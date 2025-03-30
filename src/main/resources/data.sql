@@ -1,3 +1,4 @@
+DELETE FROM employee WHERE store_id = 1;
 DELETE FROM category WHERE store_id = 1;
 DELETE FROM store WHERE store_id = 1;
 
