@@ -59,19 +59,11 @@ jobs:
       - name: docker pull
         run : sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test
 
-      - name: docker stop container
+      - name: docker stop and remove existing container
         run: |
-<<<<<<< Updated upstream
           if [ $(sudo docker ps -a -q -f name=spring-cicd-test) ]; then
             sudo docker stop spring-cicd-test
-=======
-          CONTAINER_ID=$(sudo docker ps -a --filter "name=^/spring-cicd-test$" --format "{{.ID}}")
-          if [ "$CONTAINER_ID" ]; then
-          sudo docker stop $CONTAINER_ID
-          sudo docker rm $CONTAINER_ID
->>>>>>> Stashed changes
-          fi
-
+            fi
       - name: docker run new container
         run: sudo docker run --rm -it -d -p 8080:8080 --name spring-cicd-test ${{ secrets.DOCKERHUB_USERNAME }}/spring-cicd-test
 
