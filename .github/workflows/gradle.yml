@@ -61,9 +61,11 @@ jobs:
 
       - name: docker stop and remove existing container
         run: |
-          if [ $(sudo docker ps -a -q -f name=spring-cicd-test) ]; then
-          sudo docker stop spring-cicd-test
-          sudo docker rm spring-cicd-test
+          CONTAINER_ID=$(sudo docker ps -a --filter "name=^/spring-cicd-test$" --format "{{.ID}}")
+          if [ "$CONTAINER_ID" ]; then
+          sudo docker stop $CONTAINER_ID
+          sudo docker rm $CONTAINER_ID
+
           fi
 
       - name: docker run new container
