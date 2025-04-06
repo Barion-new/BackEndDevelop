@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class OrderService {
 
@@ -48,6 +50,14 @@ public class OrderService {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + orderId));
     }
+
+
+
+    @Transactional(readOnly = true)
+    public List<Order> getOrdersByStoreId(Integer storeId) {
+        return (List<Order>) orderRepository.findByStoreStoreId(storeId);
+    }
+
 
     /**
      * 주문 수정

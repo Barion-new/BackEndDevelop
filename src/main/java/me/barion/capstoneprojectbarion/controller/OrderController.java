@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -38,6 +39,13 @@ public class OrderController {
         } catch (EntityNotFoundException | NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @Operation(summary = "매장의 모든 주문 조회", description = "storeId로 해당 매장의 모든 주문을 조회합니다.")
+    @GetMapping("/store/{storeId}")
+    public ResponseEntity<List<Order>> getOrdersByStoreId(@PathVariable Integer storeId) {
+        List<Order> orders = orderService.getOrdersByStoreId(storeId);
+        return ResponseEntity.ok(orders);
     }
 
     @Operation(summary = "주문 수정", description = "주문 정보를 수정합니다.")

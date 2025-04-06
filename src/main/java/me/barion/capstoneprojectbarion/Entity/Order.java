@@ -1,5 +1,6 @@
 package me.barion.capstoneprojectbarion.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "order") // 실제 DB 테이블 이름이 "order"라면 그대로 사용 (주의: SQL 예약어 충돌 가능)
+@Table(name = "orders") // SQL 예약어 충돌로 orders로 변경
 public class Order {
 
     @Id
@@ -18,9 +19,11 @@ public class Order {
     private Integer orderId;
 
     // Store와 N:1 관계
-    @ManyToOne
-    @JoinColumn(name = "store_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "store_id")
     private Store store;
+
 
     @Column(name = "order_date")
     private LocalDateTime orderDate;
