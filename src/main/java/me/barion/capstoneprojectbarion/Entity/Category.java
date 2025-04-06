@@ -23,7 +23,7 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
-    @ColumnDefault("1") // 기본값 설정
+    @ColumnDefault("0") // 기본값 설정
     @JsonIgnore
     private Store store;
 
@@ -32,7 +32,7 @@ public class Category {
     public void prePersist() {
         if (this.store == null) {
             Store defaultStore = new Store();
-            defaultStore.setStoreId(1); // 기본 store_id 값 설정
+            defaultStore.setStoreId(0); // 기본 store_id 값 설정
             this.store = defaultStore;
         }
     }
