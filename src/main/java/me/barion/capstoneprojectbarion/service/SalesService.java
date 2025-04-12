@@ -44,41 +44,41 @@ public class SalesService {
 
     // 시간별 매출 조회
     public List<Map<String, Object>> getSalesByHour() {
-        return ordersRepository.findSalesByHour();
+        return salesRepository.findSalesByHour();
     }
 
     // 날짜별 매출 조회
     public List<Map<String, Object>> getSalesByDate() {
-        return ordersRepository.findSalesByDate();
+        return salesRepository.findSalesByDate();
     }
 
     // 월별 매출 조회
     public List<Map<String, Object>> getSalesByMonth() {
-        return ordersRepository.findSalesByMonth();
+        return salesRepository.findSalesByMonth();
     }
 
     // 연도별 매출 조회
     public List<Map<String, Object>> getSalesByYear() {
-        return ordersRepository.findSalesByYear();
+        return salesRepository.findSalesByYear();
     }
 
     // 특정 날짜의 시간별 매출 조회
     public List<Map<String, Object>> getSalesByHourForDate(LocalDate date) {
-        return ordersRepository.findSalesByHourForDate(date);
+        return salesRepository.findSalesByHourForDate(date);
     }
 
     // 특정 기간의 날짜별 매출 조회
     public List<Map<String, Object>> getSalesByDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return ordersRepository.findSalesByDateBetween(startDate, endDate);
+        return salesRepository.findSalesByDateBetween(startDate, endDate);
     }
 
     // 특정 기간의 월별 매출 조회
     public List<Map<String, Object>> getSalesByMonthBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return ordersRepository.findSalesByMonthBetween(startDate, endDate);
+        return salesRepository.findSalesByMonthBetween(startDate, endDate);
     }
 
     // 특정 기간의 연도별 매출 조회
     public List<Map<String, Object>> getSalesByYearBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return ordersRepository.findSalesByYearBetween(startDate, endDate);
+        return salesRepository.findSalesByYearBetween(startDate, endDate);
     }
 }
