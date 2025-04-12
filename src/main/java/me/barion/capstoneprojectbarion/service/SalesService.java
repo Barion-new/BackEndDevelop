@@ -1,16 +1,14 @@
 package me.barion.capstoneprojectbarion.service;
 
-import me.barion.capstoneprojectbarion.Entity.Sales;
+
 import me.barion.capstoneprojectbarion.repository.OrderRepository;
 import me.barion.capstoneprojectbarion.repository.SalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
 
 @Service
 public class SalesService {
@@ -22,7 +20,7 @@ public class SalesService {
     private OrderRepository ordersRepository;
 
 
-    // Order 테이블의 total_amount 합계 계산
+
     public int calculateTotalSales() {
         return ordersRepository.sumTotalAmount();
     }
@@ -47,10 +45,6 @@ public class SalesService {
         return salesRepository.findSalesByYear();
     }
 
-    // 특정 날짜의 시간별 매출 조회
-    public List<Map<String, Object>> getSalesByHourForDate(LocalDate date) {
-        return salesRepository.findSalesByHourForDate(date);
-    }
 
 
 }

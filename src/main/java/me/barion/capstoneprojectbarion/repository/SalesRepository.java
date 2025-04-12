@@ -29,9 +29,5 @@ public interface SalesRepository extends JpaRepository<Sales, Integer> {
     @Query(value = "SELECT YEAR(order_date) as year, COALESCE(SUM(total_amount), 0) as total FROM orders GROUP BY YEAR(order_date) ORDER BY year", nativeQuery = true)
     List<Map<String, Object>> findSalesByYear();
 
-    // 특정 날짜의 시간별 매출 조회
-    @Query(value = "SELECT HOUR(order_date) as hour, COALESCE(SUM(total_amount), 0) as total FROM orders WHERE DATE(order_date) = :date GROUP BY HOUR(order_date) ORDER BY hour", nativeQuery = true)
-    List<Map<String, Object>> findSalesByHourForDate(@Param("date") LocalDate date);
-
 
 }
