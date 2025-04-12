@@ -21,21 +21,6 @@ public class SalesService {
     @Autowired
     private OrderRepository ordersRepository;
 
-    public List<Sales> getAllSales() {
-        return salesRepository.findAll();
-    }
-
-    public Optional<Sales> getSalesById(int salesId) {
-        return salesRepository.findById(salesId);
-    }
-
-    public Sales saveSales(Sales sales) {
-        return salesRepository.save(sales);
-    }
-
-    public void deleteSales(int salesId) {
-        salesRepository.deleteById(salesId);
-    }
 
     // Order 테이블의 total_amount 합계 계산
     public int calculateTotalSales() {
@@ -67,18 +52,5 @@ public class SalesService {
         return salesRepository.findSalesByHourForDate(date);
     }
 
-    // 특정 기간의 날짜별 매출 조회
-    public List<Map<String, Object>> getSalesByDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return salesRepository.findSalesByDateBetween(startDate, endDate);
-    }
 
-    // 특정 기간의 월별 매출 조회
-    public List<Map<String, Object>> getSalesByMonthBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return salesRepository.findSalesByMonthBetween(startDate, endDate);
-    }
-
-    // 특정 기간의 연도별 매출 조회
-    public List<Map<String, Object>> getSalesByYearBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return salesRepository.findSalesByYearBetween(startDate, endDate);
-    }
 }

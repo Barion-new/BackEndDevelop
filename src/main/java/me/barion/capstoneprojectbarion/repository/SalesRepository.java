@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -34,15 +33,5 @@ public interface SalesRepository extends JpaRepository<Sales, Integer> {
     @Query(value = "SELECT HOUR(order_date) as hour, COALESCE(SUM(total_amount), 0) as total FROM orders WHERE DATE(order_date) = :date GROUP BY HOUR(order_date) ORDER BY hour", nativeQuery = true)
     List<Map<String, Object>> findSalesByHourForDate(@Param("date") LocalDate date);
 
-    // 특정 기간의 날짜별 매출 조회
-    @Query(value = "SELECT DATE(order_date) as date, COALESCE(SUM(total_amount), 0) as total FROM orders WHERE order_date BETWEEN :startDate AND :endDate GROUP BY DATE(order_date) ORDER BY date", nativeQuery = true)
-    List<Map<String, Object>> findSalesByDateBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
-    // 특정 기간의 월별 매출 조회
-    @Query(value = "SELECT YEAR(order_date) as year, MONTH(order_date) as month, COALESCE(SUM(total_amount), 0) as total FROM orders WHERE order_date BETWEEN :startDate AND :endDate GROUP BY YEAR(order_date), MONTH(order_date) ORDER BY year, month", nativeQuery = true)
-    List<Map<String, Object>> findSalesByMonthBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
-
-    // 특정 기간의 연도별 매출 조회
-    @Query(value = "SELECT YEAR(order_date) as year, COALESCE(SUM(total_amount), 0) as total FROM orders WHERE order_date BETWEEN :startDate AND :endDate GROUP BY YEAR(order_date) ORDER BY year", nativeQuery = true)
-    List<Map<String, Object>> findSalesByYearBetween(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }
