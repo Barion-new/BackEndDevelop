@@ -1,4 +1,3 @@
-
 package me.barion.capstoneprojectbarion.Entity;
 
 import jakarta.persistence.*;
@@ -7,50 +6,27 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
-@Table(name = "Sales")
+@Entity
+@Table(name = "sales")
 public class Sales {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int salesId;
+    private Integer salesId;
 
     @Column(nullable = false)
-    private LocalDateTime salesDate;
+    private LocalDateTime salesDate; // 매출 기준 날짜/시간
 
     @Column(nullable = false)
-    private int totalSales;
+    private Integer totalSales; // 총 매출 금액
 
-    @Column(nullable = false)
-    private int totalCost;
+    public Sales() {
+    }
 
-    @Column(nullable = false)
-    private int profit;
-
-    @Column(nullable = false)
-    private int hourlySales;
-
-    @Column(nullable = false)
-    private int hourlyProfit;
-
-    @Column(nullable = false)
-    private int dailySales;
-
-    @Column(nullable = false)
-    private int dailyProfit;
-
-    @Column(nullable = false)
-    private int monthlySales;
-
-    @Column(nullable = false)
-    private int monthlyProfit;
-
-    @Column(nullable = false)
-    private int yearlySales;
-
-    @Column(nullable = false)
-    private int yearlyProfit;
-
+    public Sales(LocalDateTime salesDate, Integer totalSales) {
+        this.salesDate = salesDate;
+        this.totalSales = totalSales;
+    }
 }
