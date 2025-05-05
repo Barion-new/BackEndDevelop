@@ -1,8 +1,8 @@
 package me.barion.capstoneprojectbarion.controller;
 
 import me.barion.capstoneprojectbarion.Entity.Menu;
-import me.barion.capstoneprojectbarion.Entity.MenuOption;
 import me.barion.capstoneprojectbarion.dto.MenuOptionRequestDto;
+import me.barion.capstoneprojectbarion.dto.MenuOptionResponseDto;
 import me.barion.capstoneprojectbarion.dto.MenuRequestDto;
 import me.barion.capstoneprojectbarion.dto.MenuResponseDto;
 import me.barion.capstoneprojectbarion.service.MenuOptionService;
@@ -65,24 +65,24 @@ public class MenuController {
         return ResponseEntity.noContent().build();
     }
 
-    // 메뉴 옵션 생성
+    // 메뉴 옵션 생성 - 수정된 부분
     @PostMapping("/{menuId}/options")
-    public ResponseEntity<MenuOption> createOption(
+    public ResponseEntity<MenuOptionResponseDto> createOption(
             @PathVariable Long menuId,
             @RequestBody MenuOptionRequestDto dto) {
         dto.setMenuId(menuId);
         return ResponseEntity.ok(menuOptionService.createOption(dto));
     }
 
-    // 메뉴 옵션 조회
+    // 메뉴 옵션 조회 - 수정된 부분
     @GetMapping("/{menuId}/options")
-    public ResponseEntity<List<MenuOption>> getMenuOptions(@PathVariable Long menuId) {
+    public ResponseEntity<List<MenuOptionResponseDto>> getMenuOptions(@PathVariable Long menuId) {
         return ResponseEntity.ok(menuOptionService.getMenuOptions(menuId));
     }
 
-    // 메뉴 옵션 수정
+    // 메뉴 옵션 수정 - 수정된 부분
     @PutMapping("/{menuId}/options/{optionId}")
-    public ResponseEntity<MenuOption> updateOption(
+    public ResponseEntity<MenuOptionResponseDto> updateOption(
             @PathVariable Long menuId,
             @PathVariable Long optionId,
             @RequestBody MenuOptionRequestDto dto) {
