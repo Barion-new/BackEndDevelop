@@ -23,7 +23,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = org.springframework.security.core.userdetails.User.withUsername("defaultUser")
-                .password(passwordEncoder().encode("qwer1234")) // 고정된 login_code
+                .password(passwordEncoder().encode("1234")) // 고정된 login_code
                 .roles("USER")
                 .build();
 
