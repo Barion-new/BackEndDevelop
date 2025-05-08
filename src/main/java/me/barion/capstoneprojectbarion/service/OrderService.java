@@ -2,100 +2,120 @@ package me.barion.capstoneprojectbarion.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import me.barion.capstoneprojectbarion.dto.OrderDto;
+import me.barion.capstoneprojectbarion.dto.OrderItemDto;
+import me.barion.capstoneprojectbarion.Entity.Menu;
 import me.barion.capstoneprojectbarion.Entity.Order;
+import me.barion.capstoneprojectbarion.Entity.OrderItem;
 import me.barion.capstoneprojectbarion.Entity.Store;
+import me.barion.capstoneprojectbarion.repository.MenuRepository;
 import me.barion.capstoneprojectbarion.repository.OrderRepository;
 import me.barion.capstoneprojectbarion.repository.StoreRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
+    private final OrderRepository orderRepo;
+    private final StoreRepository storeRepo;
+    private final MenuRepository menuRepo;
 
-    private final OrderRepository orderRepository;
-    private final StoreRepository storeRepository;
-
-    @Autowired
-    public OrderService(OrderRepository orderRepository, StoreRepository storeRepository) {
-        this.orderRepository = orderRepository;
-        this.storeRepository = storeRepository;
+    public OrderService(OrderRepository orderRepo, StoreRepository storeRepo, MenuRepository menuRepo) {
+        this.orderRepo = orderRepo;
+        this.storeRepo = storeRepo;
+        this.menuRepo = menuRepo;
     }
 
-    /**
-     * 주문 생성
-     */
     @Transactional
-    public Order createOrder(OrderDto orderDto) {
-        // storeId를 통해 Store 엔티티를 가져옴
-        Store store = storeRepository.findById(orderDto.getStoreId())
-                .orElseThrow(() -> new EntityNotFoundException("Store not found with id: " + orderDto.getStoreId()));
+    public OrderDto createOrder(OrderDto dto) {
+        Store store = storeRepo.findById(dto.getStoreId())
+                .orElseThrow(() -> new EntityNotFoundException("Store not found: " + dto.getStoreId()));
 
-        Order order = new Order();
-        order.setStore(store);
-        order.setOrderDate(orderDto.getOrderDate());
-        order.setTotalAmount(orderDto.getTotalAmount());
-        order.setOrderStatus(orderDto.getOrderStatus());
+        Order order = Order.builder()
+                .store(store)
+                .orderDate(dto.getOrderDate())
+                .orderStatus(dto.getOrderStatus())
+                .build();
 
-        return orderRepository.save(order);
+        int total = 0;
+        for (OrderItemDto itemDto : dto.getItems()) {
+            Menu menu = menuRepo.findById(itemDto.getMenuId())
+                    .orElseThrow(() -> new EntityNotFoundException("Menu not found: " + itemDto.getMenuId()));
+
+            OrderItem item = OrderItem.builder()
+                    .order(order)
+                    .menu(menu)
+                    .quantity(itemDto.getQuantity())
+                    .unitPrice(menu.getPrice())
+                    .build();
+
+            order.getItems().add(item);
+            total += item.getUnitPrice() * item.getQuantity();
+        }
+        order.setTotalAmount(total);
+        Order saved = orderRepo.save(order);
+
+        // 엔티티 → DTO 변환
+        OrderDto result = toDto(saved);
+        return result;
     }
 
-    /**
-     * 주문 조회 (단건)
-     */
     @Transactional(readOnly = true)
-    public Order getOrder(Integer orderId) {
-        return orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + orderId));
+    public OrderDto getOrder(Integer id) {
+        Order order = orderRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found: " + id));
+        return toDto(order);
     }
-
-
 
     @Transactional(readOnly = true)
-    public List<Order> getOrdersByStoreId(Integer storeId) {
-        return (List<Order>) orderRepository.findByStoreStoreId(storeId);
+    public List<OrderDto> getOrdersByStoreId(Integer storeId) {
+        return orderRepo.findByStoreStoreId(storeId).stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
-
-    /**
-     * 주문 수정
-     */
     @Transactional
-    public Order updateOrder(Integer orderId, OrderDto orderDto) {
-        // 기존 주문 정보 조회
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found with id: " + orderId));
+    public OrderDto updateOrder(Integer id, OrderDto dto) {
+        Order order = orderRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found: " + id));
 
-        // storeId가 변경될 수 있다면, Store도 다시 매핑
-        if (orderDto.getStoreId() != null) {
-            Store store = storeRepository.findById(orderDto.getStoreId())
-                    .orElseThrow(() -> new EntityNotFoundException("Store not found with id: " + orderDto.getStoreId()));
-            order.setStore(store);
-        }
+        if (dto.getOrderDate() != null) order.setOrderDate(dto.getOrderDate());
+        if (dto.getOrderStatus() != null) order.setOrderStatus(dto.getOrderStatus());
+        // items 수정 로직 생략 (필요시 추가)
 
-        if (orderDto.getOrderDate() != null) {
-            order.setOrderDate(orderDto.getOrderDate());
-        }
-        if (orderDto.getTotalAmount() != null) {
-            order.setTotalAmount(orderDto.getTotalAmount());
-        }
-        if (orderDto.getOrderStatus() != null) {
-            order.setOrderStatus(orderDto.getOrderStatus());
-        }
-
-        return orderRepository.save(order);
+        Order updated = orderRepo.save(order);
+        return toDto(updated);
     }
 
-    /**
-     * 주문 삭제
-     */
     @Transactional
-    public void deleteOrder(Integer orderId) {
-        if (!orderRepository.existsById(orderId)) {
-            throw new EntityNotFoundException("Order not found with id: " + orderId);
+    public void deleteOrder(Integer id) {
+        if (!orderRepo.existsById(id)) {
+            throw new EntityNotFoundException("Order not found: " + id);
         }
-        orderRepository.deleteById(orderId);
+        orderRepo.deleteById(id);
+    }
+
+    private OrderDto toDto(Order order) {
+        List<OrderItemDto> items = order.getItems().stream()
+                .map(i -> OrderItemDto.builder()
+                        .menuId(i.getMenu().getMenuId())
+                        .menuName(i.getMenu().getMenuName())
+                        .quantity(i.getQuantity())
+                        .unitPrice(i.getUnitPrice())
+                        // 아래에서 메뉴별 총합 가격 계산
+                        .totalPrice(i.getUnitPrice() * i.getQuantity())
+                        .build())
+                .collect(Collectors.toList());
+
+        return OrderDto.builder()
+                .orderId(order.getOrderId())
+                .storeId(order.getStore().getStoreId())
+                .orderDate(order.getOrderDate())
+                .orderStatus(order.getOrderStatus())
+                .items(items)
+                .totalAmount(order.getTotalAmount())
+                .build();
     }
 }

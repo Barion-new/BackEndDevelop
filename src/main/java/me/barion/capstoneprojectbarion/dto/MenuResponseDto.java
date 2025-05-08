@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class MenuResponseDto {
     private Long menuId;
     private int category;
-    private int orderId;
+//    private int orderId;
     private String menuName;
     private int price;
     private int cost;
@@ -32,7 +32,7 @@ public class MenuResponseDto {
         return MenuResponseDto.builder()
                 .menuId(menu.getMenuId())
                 .category(menu.getCategory())
-                .orderId(menu.getOrderId())
+//                .orderId(menu.getOrderId())
                 .menuName(menu.getMenuName())
                 .price(menu.getPrice())
                 .cost(menu.getCost())

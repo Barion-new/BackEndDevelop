@@ -28,7 +28,7 @@ public class MenuService {
         Menu menu = new Menu();
         menu.setMenuName(dto.getMenuName());
         menu.setCategory(dto.getCategory());
-        menu.setOrderId(dto.getOrderId());
+//        menu.setOrderId(dto.getOrderId());
         menu.setPrice(dto.getPrice());
         menu.setCost(dto.getCost());
         menu.setMenuPresent(dto.getMenuPresent());
@@ -69,7 +69,7 @@ public class MenuService {
 
         menu.setMenuName(dto.getMenuName());
         menu.setCategory(dto.getCategory());
-        menu.setOrderId(dto.getOrderId());
+//        menu.setOrderId(dto.getOrderId());
         menu.setPrice(dto.getPrice());
         menu.setCost(dto.getCost());
         menu.setMenuPresent(dto.getMenuPresent());

@@ -1,47 +1,35 @@
 package me.barion.capstoneprojectbarion.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
-@Setter
 @Entity
-@Table(name = "orders") // SQL 예약어 충돌로 orders로 변경
+@Table(name = "orders")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Order {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
     private Integer orderId;
 
-    // Store와 N:1 관계
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
-
-    @Column(name = "order_date")
+    @Column(name = "order_date", nullable = false)
     private LocalDateTime orderDate;
 
-    @Column(name = "total_amount")
+    @Column(name = "total_amount", nullable = false)
     private Integer totalAmount;
 
-    @Column(name = "order_status", length = 100)
+    @Column(name = "order_status", length = 100, nullable = false)
     private String orderStatus;
 
-    public Order() {
-    }
-
-    public Order(Store store, LocalDateTime orderDate, Integer totalAmount, String orderStatus) {
-        this.store = store;
-        this.orderDate = orderDate;
-        this.totalAmount = totalAmount;
-        this.orderStatus = orderStatus;
-    }
+    @Builder.Default
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items = new ArrayList<>();
 }
-
