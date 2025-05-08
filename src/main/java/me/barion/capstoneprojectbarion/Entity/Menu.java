@@ -14,7 +14,7 @@ public class Menu {
     private Long menuId;
 
     private int category;
-    private int orderId;
+//    private int orderId;
 
     @Column(length = 100, nullable = false)
     private String menuName;

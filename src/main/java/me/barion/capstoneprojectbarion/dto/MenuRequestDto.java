@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 public class MenuRequestDto {
     private int category;
-    private int orderId;
+//    private int orderId;
     private String menuName;
     private int price;
     private int cost;
