@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .password(passwordEncoder().encode("1234")) // 고정된 login_code
                 .roles("USER")
                 .build();
-
+//
         return new InMemoryUserDetailsManager(user);
     }
 
