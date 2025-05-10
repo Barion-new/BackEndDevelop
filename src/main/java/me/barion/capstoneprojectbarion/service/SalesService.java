@@ -104,4 +104,10 @@ public class SalesService {
 
         return dailySalesDtos;
     }
+
+    // 순 이익 계산
+    public SalesDto calculateTotalProfit() {
+        Integer totalProfit = salesRepository.sumTotalProfit();
+        return new SalesDto(LocalDateTime.now(), totalProfit != null ? totalProfit : 0);
+    }
 }

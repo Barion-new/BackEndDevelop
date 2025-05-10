@@ -22,11 +22,15 @@ public class Sales {
     @Column(nullable = false)
     private Integer totalSales; // 총 매출 금액
 
+    @Column(nullable = false)
+    private Integer totalCost; // 총 비용
+
     public Sales() {
     }
 
-    public Sales(LocalDateTime salesDate, Integer totalSales) {
+    public Sales(LocalDateTime salesDate, Integer totalSales, Integer totalCost) {
         this.salesDate = salesDate;
         this.totalSales = totalSales;
+        this.totalCost = totalCost;
     }
 }

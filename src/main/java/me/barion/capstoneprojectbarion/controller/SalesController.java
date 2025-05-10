@@ -50,4 +50,11 @@ public class SalesController {
         List<SalesDto> monthlySales = salesService.calculateMonthlySales();
         return ResponseEntity.ok(monthlySales);
     }
+
+    @Operation(summary = "순 이익 조회", description = "순 이익을 조회합니다.")
+    @GetMapping("/totalProfit")
+    public ResponseEntity<SalesDto> getTotalProfit() {
+        SalesDto totalProfit = salesService.calculateTotalProfit();
+        return ResponseEntity.ok(totalProfit);
+    }
 }
