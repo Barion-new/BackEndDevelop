@@ -1,21 +1,18 @@
 package me.barion.capstoneprojectbarion.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SalesDto {
-    private LocalDateTime salesDate; // 매출 날짜/시간
-    private Integer totalSales; // 총 매출 금액
-
-    public SalesDto() {
-    }
-
-    public SalesDto(LocalDateTime salesDate, Integer totalSales) {
-        this.salesDate = salesDate;
-        this.totalSales = totalSales;
-    }
+    private LocalDateTime salesDate; // 또는 date
+    private Integer totalSales;
+    private Integer totalCost;
+    private Integer profit;
 }
