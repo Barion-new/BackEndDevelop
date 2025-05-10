@@ -50,4 +50,18 @@ public class SalesController {
         List<SalesDto> monthlySales = salesService.calculateMonthlySales();
         return ResponseEntity.ok(monthlySales);
     }
+
+    @Operation(summary = "총 순이익 조회", description = "총 순이익을 조회합니다.")
+    @GetMapping("/totalProfit")
+    public ResponseEntity<SalesDto> getTotalProfit() {
+        SalesDto totalProfit = salesService.calculateTotalProfit();
+        return ResponseEntity.ok(totalProfit);
+    }
+
+    @Operation(summary = "월별 순이익 조회", description = "월별 순이익을 조회합니다.")
+    @GetMapping("/monthlyProfit")
+    public ResponseEntity<List<SalesDto>> getMonthlyProfit() {
+        List<SalesDto> monthlyProfit = salesService.calculateMonthlyProfit();
+        return ResponseEntity.ok(monthlyProfit);
+    }
 }
