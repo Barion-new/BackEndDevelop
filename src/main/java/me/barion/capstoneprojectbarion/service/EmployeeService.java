@@ -42,7 +42,7 @@ public class EmployeeService {
         employee.setStoreId(employeeDto.getStoreId());
         employee.setEmployeeName(employeeDto.getEmployeeName());
         employee.setPhoneNumber(employeeDto.getPhoneNumber());
-        employee.setHourlyWage(employeeDto.getHourlyWage());
+        employee.setSalary(employeeDto.getSalary());
         employee.setPosition(employeeDto.getPosition());
         employee.setBankAccount(employeeDto.getBankAccount());
 

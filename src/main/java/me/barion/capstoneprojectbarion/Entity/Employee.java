@@ -24,8 +24,8 @@ public class Employee {
     @Column(name = "phone_number", nullable = false, length = 100)
     private String phoneNumber;
 
-    @Column(name = "hourly_wage", nullable = false)
-    private Integer hourlyWage;
+    @Column(name = "salary", nullable = false)
+    private Integer salary;
 
     @Column(name = "position", nullable = false, length = 100)
     private String position;
