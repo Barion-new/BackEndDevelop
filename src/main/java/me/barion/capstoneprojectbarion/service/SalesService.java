@@ -1,12 +1,14 @@
 package me.barion.capstoneprojectbarion.service;
 
 import me.barion.capstoneprojectbarion.dto.SalesDto;
-import me.barion.capstoneprojectbarion.Entity.Order; // Order 엔티티는 이 메소드에서 직접 사용하지 않음
+import me.barion.capstoneprojectbarion.Entity.Order;
 import me.barion.capstoneprojectbarion.Entity.Sales;
 import me.barion.capstoneprojectbarion.repository.OrderRepository;
 import me.barion.capstoneprojectbarion.repository.SalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+// import org.slf4j.Logger; // 필요시 로깅 추가
+// import org.slf4j.LoggerFactory; // 필요시 로깅 추가
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,7 +28,10 @@ public class SalesService {
 
     public SalesDto calculateTotalSales() {
         Integer totalAmount = orderRepository.sumTotalAmount();
-        return new SalesDto(LocalDateTime.now(), totalAmount != null ? totalAmount : 0);
+        return SalesDto.builder()
+                .salesDate(LocalDateTime.now())
+                .totalSales(totalAmount != null ? totalAmount : 0)
+                .build();
     }
 
     public List<SalesDto> calculateYearlySales() {
@@ -40,7 +45,12 @@ public class SalesService {
                 ));
 
         salesByYear.forEach((year, total) -> {
-            yearlySalesDtos.add(new SalesDto(LocalDateTime.of(year, 1, 1, 0, 0), total));
+            yearlySalesDtos.add(
+                    SalesDto.builder()
+                            .salesDate(LocalDateTime.of(year, 1, 1, 0, 0))
+                            .totalSales(total)
+                            .build()
+            );
         });
         yearlySalesDtos.sort((s1, s2) -> s1.getSalesDate().compareTo(s2.getSalesDate()));
         return yearlySalesDtos;
@@ -57,7 +67,12 @@ public class SalesService {
                 ));
 
         salesByMonth.forEach((yearMonth, total) -> {
-            monthlySalesDtos.add(new SalesDto(yearMonth.atDay(1).atStartOfDay(), total));
+            monthlySalesDtos.add(
+                    SalesDto.builder()
+                            .salesDate(yearMonth.atDay(1).atStartOfDay())
+                            .totalSales(total)
+                            .build()
+            );
         });
         monthlySalesDtos.sort((s1, s2) -> s1.getSalesDate().compareTo(s2.getSalesDate()));
         return monthlySalesDtos;
@@ -73,7 +88,12 @@ public class SalesService {
                 ));
 
         salesByHour.forEach((hour, total) -> {
-            hourlySalesDtos.add(new SalesDto(hour, total));
+            hourlySalesDtos.add(
+                    SalesDto.builder()
+                            .salesDate(hour)
+                            .totalSales(total)
+                            .build()
+            );
         });
         hourlySalesDtos.sort((s1, s2) -> s1.getSalesDate().compareTo(s2.getSalesDate()));
         return hourlySalesDtos;
@@ -90,16 +110,24 @@ public class SalesService {
                 ));
 
         salesByDay.forEach((day, total) -> {
-            dailySalesDtos.add(new SalesDto(day, total));
+            dailySalesDtos.add(
+                    SalesDto.builder()
+                            .salesDate(day)
+                            .totalSales(total)
+                            .build()
+            );
         });
         dailySalesDtos.sort((s1, s2) -> s1.getSalesDate().compareTo(s2.getSalesDate()));
         return dailySalesDtos;
     }
 
-    public SalesDto calculateTotalProfit() {
 
-        Integer totalProfit = salesRepository.sumTotalProfit();
-        return new SalesDto(LocalDateTime.now(), totalProfit != null ? totalProfit : 0);
+
+    public SalesDto calculateTotalProfit() {
+        Integer totalProfitValue = salesRepository.sumTotalProfit();return SalesDto.builder()
+                .salesDate(LocalDateTime.now())
+                .profit(totalProfitValue != null ? totalProfitValue : 0)
+                .build();
     }
 
     public List<SalesDto> calculateMonthlyProfit() {
@@ -108,16 +136,25 @@ public class SalesService {
 
         Map<YearMonth, Integer> profitByMonth = salesList.stream()
                 .collect(Collectors.groupingBy(
-                        sales -> YearMonth.from(sales.getSalesDate()), // salesDate에서 YearMonth 추출
+                        sales -> YearMonth.from(sales.getSalesDate()),
                         Collectors.summingInt(sales -> sales.getTotalSales() - sales.getTotalCost()) // 순이익 계산
                 ));
 
-        profitByMonth.forEach((yearMonth, profit) -> {
-
-            monthlyProfitDtos.add(new SalesDto(yearMonth.atDay(1).atStartOfDay(), profit));
+        profitByMonth.forEach((yearMonth, profitValue) -> {
+            monthlyProfitDtos.add(
+                    SalesDto.builder()
+                            .salesDate(yearMonth.atDay(1).atStartOfDay())
+                            .profit(profitValue) // profit 필드에 할당
+                            .build()
+            );
         });
 
-        monthlyProfitDtos.sort((dto1, dto2) -> dto1.getSalesDate().compareTo(dto2.getSalesDate()));
+        monthlyProfitDtos.sort((dto1, dto2) -> {
+            if (dto1.getSalesDate() == null && dto2.getSalesDate() == null) return 0;
+            if (dto1.getSalesDate() == null) return -1;
+            if (dto2.getSalesDate() == null) return 1;
+            return dto1.getSalesDate().compareTo(dto2.getSalesDate());
+        });
 
         return monthlyProfitDtos;
     }
