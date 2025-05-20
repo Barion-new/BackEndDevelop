@@ -83,12 +83,13 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/v3/api-docs/**", // Swagger API 문서 경로
-                                "/swagger-ui/**",  // Swagger UI 리소스 경로
-                                "/swagger-ui.html" // Swagger UI HTML 페이지
-                        ).permitAll()
-                        .anyRequest().authenticated()
+//                        .requestMatchers(
+//                                "/v3/api-docs/**", // Swagger API 문서 경로
+//                                "/swagger-ui/**",  // Swagger UI 리소스 경로
+//                                "/swagger-ui.html" // Swagger UI HTML 페이지
+//                        ).permitAll()
+//                        .anyRequest().authenticated()
+                          .anyRequest().permitAll()
                 )
                 .authenticationProvider(authenticationProvider)
                 .httpBasic(httpBasic -> httpBasic.realmName("MyApp"))
